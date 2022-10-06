@@ -1,3 +1,2 @@
-[App1](https://boruchzidell.github.io/playland/app1)
-[App2](https://boruchzidell.github.io/playland/app2)
+- [ ] [Todo App](https://boruchzidell.github.io/front_end_projects/todo_web_storage) - SPA todo list that persists data across browser reloads.
 
