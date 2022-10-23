@@ -1,50 +1,52 @@
+
+class TodoList {
+  constructor(listContainerElement) {
+    this.list = document.querySelector(listContainerElement);
+
+    this.listArray = localStorage.getItem('items')
+      ? JSON.parse(localStorage.getItem('items'))
+      : [];
+
+    // Load data from storage
+    this.listArray.forEach(this.addItemToList.bind(this));
+  }
+
+  addItemToList(name) {
+    let li = document.createElement('li');
+    li.textContent = name;
+
+    this.list.appendChild(li);
+  }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
+  let todoList = new TodoList('#list');
+
   let getElement = (selector) => document.querySelector(selector);
 
   let item = getElement('#item');
-  let list = getElement('#list');
-  let button = getElement('button');
+  let button = getElement('#clear_list');
 
-  function addLi(content) {
-    let li = document.createElement('li');
-    li.textContent = content;
-    list.appendChild(li);
-  }
 
-  function loadData() {
-    itemsArray.forEach(addLi);
-  }
-
-  // Initialize array
-  let itemsArray = localStorage.getItem('items')
-    ? JSON.parse(localStorage.getItem('items'))
-    : [];
-
-  loadData();
-
-  // Add items
   document.querySelector('form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     let todoItem = item.value;
-    itemsArray.push(todoItem);
-    localStorage.setItem('items', JSON.stringify(itemsArray));
-
-    while (list.firstChild) {
-      list.firstChild.remove();
-    }
-
-    loadData();
+    todoList.addItemToList(todoItem);
+    todoList.listArray.push(todoItem);
+    localStorage.setItem('items', JSON.stringify(todoList.listArray));
 
     this.reset();  // clear form
   });
+
 
   // Obliterate entire list
   button.addEventListener('click', function (e) {
     localStorage.clear();
 
-    while (list.firstChild) {
-      list.firstChild.remove();
+    while (todoList.list.firstChild) {
+      todoList.list.firstChild.remove();
     }
   });
 });
